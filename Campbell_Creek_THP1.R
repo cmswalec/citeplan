@@ -5,11 +5,13 @@ library(tidyverse)
 library(raster)
 library(ggplot2)
 library(gridExtra)
-library(stargazer)
 library(broom)
 library(purrr)
 
 #Note: When you create a binary grid, the files named dblbnd.adf, hdr.adf, sta.adf, vat.adf, and w001001x.adf provide metadata about the raster grid, while the file w001001.adf 
+
+
+##3 questions: 1) relative to baseline is there ever a point where hazard increases? if yes, (2) which years have a significant change and (3) is the change an increase of cells to high or low?
 
 # Read in as a raster layer and provide year of each THP
 #### NOTE: This is the ONLY section where input is required ####
@@ -20,6 +22,7 @@ THP_4 <- raster("Campbell_Creek_THP1\\camp1_2012\\w001001.adf")
 THP_5 <- raster("Campbell_Creek_THP1\\camp1_2014\\w001001.adf")
 
 THP_1_year <- 2001
+#add pre/post harvest
 THP_2_year <- 2008
 THP_3_year <- 2010
 THP_4_year <- 2012
@@ -135,39 +138,41 @@ print(hist_5)
 grid.arrange(hist_1, hist_2, hist_3, hist_4, hist_5, nrow = 2)
 
 #Calculates bin percents for high and low flame length where high flame length is >8 feet and low is = or < 8 feet
-low_freq_THP_1 <- filter(freq_THP_1, flame_length_feet <= 8)
-high_freq_THP_1 <- filter(freq_THP_1, flame_length_feet > 8)
+low_freq_THP_1 <- filter(freq_THP_1, flame_length_feet < 8)
+high_freq_THP_1 <- filter(freq_THP_1, flame_length_feet >= 8)
 
 lo1 <- round(sum(low_freq_THP_1$count)/sum(freq_THP_1$count), 2)
 hi1 <- round(sum(high_freq_THP_1$count)/sum(freq_THP_1$count), 2)
 
-low_freq_THP_2 <- filter(freq_THP_2, flame_length_feet <= 8)
-high_freq_THP_2 <- filter(freq_THP_2, flame_length_feet > 8)
+low_freq_THP_2 <- filter(freq_THP_2, flame_length_feet < 8)
+high_freq_THP_2 <- filter(freq_THP_2, flame_length_feet >= 8)
 
 lo2 <- round(sum(low_freq_THP_2$count)/sum(freq_THP_2$count), 2)
 hi2 <- round(sum(high_freq_THP_2$count)/sum(freq_THP_2$count), 2)
 
-low_freq_THP_3 <- filter(freq_THP_3, flame_length_feet <= 8)
-high_freq_THP_3 <- filter(freq_THP_3, flame_length_feet > 8)
+low_freq_THP_3 <- filter(freq_THP_3, flame_length_feet < 8)
+high_freq_THP_3 <- filter(freq_THP_3, flame_length_feet >= 8)
 
 lo3 <- round(sum(low_freq_THP_3$count)/sum(freq_THP_1$count), 2)
 hi3 <- round(sum(high_freq_THP_3$count)/sum(freq_THP_1$count), 2)
 
-low_freq_THP_4 <- filter(freq_THP_4, flame_length_feet <= 8)
-high_freq_THP_4 <- filter(freq_THP_4, flame_length_feet > 8)
+low_freq_THP_4 <- filter(freq_THP_4, flame_length_feet < 8)
+high_freq_THP_4 <- filter(freq_THP_4, flame_length_feet >= 8)
 
 lo4 <- round(sum(low_freq_THP_4$count)/sum(freq_THP_1$count), 2)
 hi4 <- round(sum(high_freq_THP_4$count)/sum(freq_THP_1$count), 2)
 
-low_freq_THP_5 <- filter(freq_THP_5, flame_length_feet <= 8)
-high_freq_THP_5 <- filter(freq_THP_5, flame_length_feet > 8)
+low_freq_THP_5 <- filter(freq_THP_5, flame_length_feet < 8)
+high_freq_THP_5 <- filter(freq_THP_5, flame_length_feet >= 8)
 
 lo5 <- round(sum(low_freq_THP_5$count)/sum(freq_THP_1$count), 2)
 hi5 <- round(sum(high_freq_THP_5$count)/sum(freq_THP_1$count), 2)
 
 #Creates table of high and low flame lengths for each year
 
-dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), "low_count" = c(lo1, lo2, lo3, lo4, hi14), "high_count" = c(hi1, hi2, hi3, hi4, hi5), "low_count_change" = c("", lo2-lo1, lo3-lo2, lo4-lo3, lo5-lo4), "high_count_change" = c("", hi2-hi1, hi3-hi2, hi4-hi3, hi5-hi4))
+##Make all percent changes compare back to the pre-harvest (here --> 2001) scenario
+
+dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), "low_percent" = c(lo1, lo2, lo3, lo4, hi14), "high_percent" = c(hi1, hi2, hi3, hi4, hi5), "low_percent_change" = c("", lo2-lo1, lo3-lo2, lo4-lo3, lo5-lo4), "high_percent_change" = c("", hi2-hi1, hi3-hi2, hi4-hi3, hi5-hi4))
 
 #Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median
 
