@@ -19,11 +19,11 @@ library(purrr)
 
 # Read in as a raster layer and provide year of each THP
 #### NOTE: This is the ONLY section where input is required ####
-THP_1 <- raster("Campbell_Creek_THP1\\camp1_2001\\w001001.adf") 
-THP_2 <- raster("Campbell_Creek_THP1\\camp1_2008\\w001001.adf") 
-THP_3 <- raster("Campbell_Creek_THP1\\camp1_2010\\w001001.adf")
-THP_4 <- raster("Campbell_Creek_THP1\\camp1_2012\\w001001.adf")
-THP_5 <- raster("Campbell_Creek_THP1\\camp1_2014\\w001001.adf")
+THP_1 <- raster("v2 adf Campbell Creek THP 1\\01thp\\w001001.adf") 
+THP_2 <- raster("v2 adf Campbell Creek THP 1\\08thp\\w001001.adf") 
+THP_3 <- raster("v2 adf Campbell Creek THP 1\\10thp\\w001001.adf")
+THP_4 <- raster("v2 adf Campbell Creek THP 1\\12thp\\w001001.adf")
+THP_5 <- raster("v2 adf Campbell Creek THP 1\\14thp\\w001001.adf")
 
 THP_1_year <- 2001 #pre-harvest
 THP_2_year <- 2008 #mid-harvest
@@ -199,8 +199,10 @@ dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_yea
                         "low_percent" = c(lo1, lo2, lo3, lo4, lo5), 
                         "med_percent" = c(me1, me2, me3, me4, me5), 
                         "high_percent" = c(hi1, hi2, hi3, hi4, hi5), 
-                        "no_to_low_change" = c("", no2-no1, no3-lo1, lo4-lo1, lo5-lo1), 
-                        "high_percent_change_from_pre_harvest" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
+                        "no_percent_change" = c("", no2-no1, no3-no1, no4-no1, no5-no1), 
+                        "low_percent_change" = c("", lo2-lo1, lo3-lo1, lo4-lo1, lo5-lo1), 
+                        "med_percent_change" = c("", me2-me1, me3-me1, me4-me1, me5-me1), 
+                        "high_percent_change" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
 
 #Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median from baseline (pre-harvest)
 
