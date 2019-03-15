@@ -140,40 +140,67 @@ print(hist_5)
 
 grid.arrange(hist_1, hist_2, hist_3, hist_4, hist_5, nrow = 2)
 
-#Calculates bin percents for high and low flame length where high flame length is >8 feet and low is = or < 8 feet
-low_freq_THP_1 <- filter(freq_THP_1, flame_length_feet < 8)
-high_freq_THP_1 <- filter(freq_THP_1, flame_length_feet >= 8)
+#Calculates bin percents for no (0- <4 ft), low (4- <8 ft), med (8- <11 ft), and high (11+ ft) flamelength
 
+no_freq_THP_1 <- filter(freq_THP_1, flame_length_feet < 4)
+low_freq_THP_1 <- filter(freq_THP_1, flame_length_feet >=4 & flame_length_feet <8)
+med_freq_THP_1 <- filter(freq_THP_1, flame_length_feet >=8 & flame_length_feet <11)
+high_freq_THP_1 <- filter(freq_THP_1, flame_length_feet >= 11)
+
+no1 <- round(sum(no_freq_THP_1$count)/sum(freq_THP_1$count), 2)
 lo1 <- round(sum(low_freq_THP_1$count)/sum(freq_THP_1$count), 2)
+me1 <- round(sum(med_freq_THP_1$count)/sum(freq_THP_1$count), 2)
 hi1 <- round(sum(high_freq_THP_1$count)/sum(freq_THP_1$count), 2)
 
-low_freq_THP_2 <- filter(freq_THP_2, flame_length_feet < 8)
-high_freq_THP_2 <- filter(freq_THP_2, flame_length_feet >= 8)
+no_freq_THP_2 <- filter(freq_THP_2, flame_length_feet < 4)
+low_freq_THP_2 <- filter(freq_THP_2, flame_length_feet >=4 & flame_length_feet <8)
+med_freq_THP_2 <- filter(freq_THP_2, flame_length_feet >=8 & flame_length_feet <11)
+high_freq_THP_2 <- filter(freq_THP_2, flame_length_feet >= 11)
 
+no2 <- round(sum(no_freq_THP_2$count)/sum(freq_THP_2$count), 2)
 lo2 <- round(sum(low_freq_THP_2$count)/sum(freq_THP_2$count), 2)
+me2 <- round(sum(med_freq_THP_2$count)/sum(freq_THP_2$count), 2)
 hi2 <- round(sum(high_freq_THP_2$count)/sum(freq_THP_2$count), 2)
 
-low_freq_THP_3 <- filter(freq_THP_3, flame_length_feet < 8)
-high_freq_THP_3 <- filter(freq_THP_3, flame_length_feet >= 8)
+no_freq_THP_3 <- filter(freq_THP_3, flame_length_feet < 4)
+low_freq_THP_3 <- filter(freq_THP_3, flame_length_feet >=4 & flame_length_feet <8)
+med_freq_THP_3 <- filter(freq_THP_3, flame_length_feet >=8 & flame_length_feet <11)
+high_freq_THP_3 <- filter(freq_THP_3, flame_length_feet >= 11)
 
-lo3 <- round(sum(low_freq_THP_3$count)/sum(freq_THP_1$count), 2)
-hi3 <- round(sum(high_freq_THP_3$count)/sum(freq_THP_1$count), 2)
+no3 <- round(sum(no_freq_THP_3$count)/sum(freq_THP_3$count), 2)
+lo3 <- round(sum(low_freq_THP_3$count)/sum(freq_THP_3$count), 2)
+me3 <- round(sum(med_freq_THP_3$count)/sum(freq_THP_3$count), 2)
+hi3 <- round(sum(high_freq_THP_3$count)/sum(freq_THP_3$count), 2)
 
-low_freq_THP_4 <- filter(freq_THP_4, flame_length_feet < 8)
-high_freq_THP_4 <- filter(freq_THP_4, flame_length_feet >= 8)
+no_freq_THP_4 <- filter(freq_THP_4, flame_length_feet < 4)
+low_freq_THP_4 <- filter(freq_THP_4, flame_length_feet >=4 & flame_length_feet <8)
+med_freq_THP_4 <- filter(freq_THP_4, flame_length_feet >=8 & flame_length_feet <11)
+high_freq_THP_4 <- filter(freq_THP_4, flame_length_feet >= 11)
 
-lo4 <- round(sum(low_freq_THP_4$count)/sum(freq_THP_1$count), 2)
-hi4 <- round(sum(high_freq_THP_4$count)/sum(freq_THP_1$count), 2)
+no4 <- round(sum(no_freq_THP_4$count)/sum(freq_THP_4$count), 2)
+lo4 <- round(sum(low_freq_THP_4$count)/sum(freq_THP_4$count), 2)
+me4 <- round(sum(med_freq_THP_4$count)/sum(freq_THP_4$count), 2)
+hi4 <- round(sum(high_freq_THP_4$count)/sum(freq_THP_4$count), 2)
 
-low_freq_THP_5 <- filter(freq_THP_5, flame_length_feet < 8)
-high_freq_THP_5 <- filter(freq_THP_5, flame_length_feet >= 8)
+no_freq_THP_5 <- filter(freq_THP_5, flame_length_feet < 4)
+low_freq_THP_5 <- filter(freq_THP_5, flame_length_feet >=4 & flame_length_feet <8)
+med_freq_THP_5 <- filter(freq_THP_5, flame_length_feet >=8 & flame_length_feet <11)
+high_freq_THP_5 <- filter(freq_THP_5, flame_length_feet >= 11)
 
-lo5 <- round(sum(low_freq_THP_5$count)/sum(freq_THP_1$count), 2)
-hi5 <- round(sum(high_freq_THP_5$count)/sum(freq_THP_1$count), 2)
+no5 <- round(sum(no_freq_THP_5$count)/sum(freq_THP_5$count), 2)
+lo5 <- round(sum(low_freq_THP_5$count)/sum(freq_THP_5$count), 2)
+me5 <- round(sum(med_freq_THP_5$count)/sum(freq_THP_5$count), 2)
+hi5 <- round(sum(high_freq_THP_5$count)/sum(freq_THP_5$count), 2)
 
 #Creates table of high and low flame lengths for each year
 
-dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), "low_percent" = c(lo1, lo2, lo3, lo4, hi14), "high_percent" = c(hi1, hi2, hi3, hi4, hi5), "low_percent_change_from_pre_harvest" = c("", lo2-lo1, lo3-lo1, lo4-lo1, lo5-lo1), "high_percent_change_from_pre_harvest" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
+dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), 
+                        "no_percent" = c(no1, no2, no3, no4, no5), 
+                        "low_percent" = c(lo1, lo2, lo3, lo4, lo5), 
+                        "med_percent" = c(me1, me2, me3, me4, me5), 
+                        "high_percent" = c(hi1, hi2, hi3, hi4, hi5), 
+                        "no_to_low_change" = c("", no2-no1, no3-lo1, lo4-lo1, lo5-lo1), 
+                        "high_percent_change_from_pre_harvest" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
 
 #Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median from baseline (pre-harvest)
 
