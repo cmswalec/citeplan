@@ -12,6 +12,10 @@ library(purrr)
 
 
 ##3 questions: 1) relative to baseline is there ever a point where hazard increases? if yes, (2) which years have a significant change and (3) is the change an increase of cells to high or low?
+#How many cells over the whole time period --> classify these as "often" and "rarely"
+#Make a matrix where you consider if the THP is in an area that is already high hazard
+#Use all four buckets (not just the two groupings we did)
+#Break it out by the different hazard buckets and the location in the harvest cycle. Then consider the total percent conversion 
 
 # Read in as a raster layer and provide year of each THP
 #### NOTE: This is the ONLY section where input is required ####
@@ -21,12 +25,11 @@ THP_3 <- raster("Campbell_Creek_THP1\\camp1_2010\\w001001.adf")
 THP_4 <- raster("Campbell_Creek_THP1\\camp1_2012\\w001001.adf")
 THP_5 <- raster("Campbell_Creek_THP1\\camp1_2014\\w001001.adf")
 
-THP_1_year <- 2001
-#add pre/post harvest
-THP_2_year <- 2008
-THP_3_year <- 2010
-THP_4_year <- 2012
-THP_5_year <- 2014
+THP_1_year <- 2001 #pre-harvest
+THP_2_year <- 2008 #mid-harvest
+THP_3_year <- 2010 #post-harvest - 1 year
+THP_4_year <- 2012 #post-harvest - 3 year
+THP_5_year <- 2014 #post-harvest - 5 year
 
 ########
 
@@ -170,21 +173,19 @@ hi5 <- round(sum(high_freq_THP_5$count)/sum(freq_THP_1$count), 2)
 
 #Creates table of high and low flame lengths for each year
 
-##Make all percent changes compare back to the pre-harvest (here --> 2001) scenario
+dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), "low_percent" = c(lo1, lo2, lo3, lo4, hi14), "high_percent" = c(hi1, hi2, hi3, hi4, hi5), "low_percent_change_from_pre_harvest" = c("", lo2-lo1, lo3-lo1, lo4-lo1, lo5-lo1), "high_percent_change_from_pre_harvest" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
 
-dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_year, THP_5_year), "low_percent" = c(lo1, lo2, lo3, lo4, hi14), "high_percent" = c(hi1, hi2, hi3, hi4, hi5), "low_percent_change" = c("", lo2-lo1, lo3-lo2, lo4-lo3, lo5-lo4), "high_percent_change" = c("", hi2-hi1, hi3-hi2, hi4-hi3, hi5-hi4))
-
-#Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median
+#Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median from baseline (pre-harvest)
 
 #First, independent 2-group 2-tailed t-tests with equal variances
 
 t_test_12 <- t.test(freq_THP_1$count, freq_THP_2$count, var.equal = TRUE)
 
-t_test_23 <- t.test(freq_THP_2$count, freq_THP_3$count, var.equal = TRUE)
+t_test_13 <- t.test(freq_THP_1$count, freq_THP_3$count, var.equal = TRUE)
 
-t_test_34 <- t.test(freq_THP_3$count, freq_THP_4$count, var.equal = TRUE)
+t_test_14 <- t.test(freq_THP_1$count, freq_THP_4$count, var.equal = TRUE)
 
-t_test_45 <- t.test(freq_THP_4$count, freq_THP_5$count, var.equal = TRUE)
+t_test_15 <- t.test(freq_THP_1$count, freq_THP_5$count, var.equal = TRUE)
 
 #Now, independent 2-group 1-tailed t-tests with equal variances 
 
@@ -192,39 +193,33 @@ t_test_12_less <- t.test(freq_THP_1$count, freq_THP_2$count, var.equal = TRUE, a
 
 t_test_12_greater <- t.test(freq_THP_1$count, freq_THP_2$count, var.equal = TRUE, alternative="greater")
 
-t_test_23_less <- t.test(freq_THP_2$count, freq_THP_3$count, var.equal = TRUE, alternative="less")
+t_test_13_less <- t.test(freq_THP_1$count, freq_THP_3$count, var.equal = TRUE, alternative="less")
 
-t_test_23_greater <- t.test(freq_THP_2$count, freq_THP_3$count, var.equal = TRUE, alternative="greater")
+t_test_13_greater <- t.test(freq_THP_1$count, freq_THP_3$count, var.equal = TRUE, alternative="greater")
 
-t_test_34_less <- t.test(freq_THP_3$count, freq_THP_4$count, var.equal = TRUE, alternative="less")
+t_test_14_less <- t.test(freq_THP_1$count, freq_THP_4$count, var.equal = TRUE, alternative="less")
 
-t_test_34_greater <- t.test(freq_THP_3$count, freq_THP_4$count, var.equal = TRUE, alternative="greater")
+t_test_14_greater <- t.test(freq_THP_1$count, freq_THP_4$count, var.equal = TRUE, alternative="greater")
 
-t_test_45_less <- t.test(freq_THP_4$count, freq_THP_5$count, var.equal = TRUE, alternative="less")
+t_test_15_less <- t.test(freq_THP_1$count, freq_THP_5$count, var.equal = TRUE, alternative="less")
 
-t_test_45_greater <- t.test(freq_THP_4$count, freq_THP_5$count, var.equal = TRUE, alternative="greater")
+t_test_15_greater <- t.test(freq_THP_1$count, freq_THP_5$count, var.equal = TRUE, alternative="greater")
 
-t_test_summary <- map_df(list(t_test_12, t_test_23, t_test_34, t_test_45, t_test_12_less, t_test_12_greater, t_test_23_less, t_test_23_greater, t_test_34_less, t_test_34_greater, t_test_45_less, t_test_45_greater), tidy)
+t_test_summary <- map_df(list(t_test_12, t_test_13, t_test_14, t_test_15, t_test_12_less, t_test_12_greater, t_test_13_less, t_test_13_greater, t_test_14_less, t_test_14_greater, t_test_15_less, t_test_15_greater), tidy)
 
 select_t_test_summary <- t_test_summary[c("p.value", "method", "alternative")]
 select_t_test_summary$significant <- ifelse(select_t_test_summary$p.value < 0.05, "yes", "no")
 select_t_test_summary$test_id <- c("t_test_12", 
-                                   "t_test_23", 
-                                   "t_test_34", 
-                                   "t_test_45", 
+                                   "t_test_13", 
+                                   "t_test_14", 
+                                   "t_test_15", 
                                    "t_test_12_less", 
                                    "t_test_12_greater", 
-                                   "t_test_23_less", 
-                                   "t_test_23_greater", 
-                                   "t_test_34_less", 
-                                   "t_test_34_greater", 
-                                   "t_test_45_less", 
-                                   "t_test_45_greater")
-
-###Summary:
-#There is significant difference in means between 2001-2008, 2010-2012, and 2012-2014, but not 2008-2010
-#The mean flame length in 2001 is significantly less than the mean flame length in 2008
-#The mean flame length in 2010 is significantly greater than the mean flame length in 2012
-#The mean flame length in 2012 is significantly greater than the mean flame length in 2014
+                                   "t_test_13_less", 
+                                   "t_test_13_greater", 
+                                   "t_test_14_less", 
+                                   "t_test_14_greater", 
+                                   "t_test_15_less", 
+                                   "t_test_15_greater")
 
 ###NOTE: right now the only section that requires manual input is the t test summary output table. Will work on summary table that automates these results so no input necessary. 
