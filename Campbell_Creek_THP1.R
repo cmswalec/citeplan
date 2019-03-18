@@ -19,11 +19,11 @@ library(purrr)
 
 # Read in as a raster layer and provide year of each THP
 #### NOTE: This is the ONLY section where input is required ####
-THP_1 <- raster("Campbell_Creek_THP1\\camp1_2001\\w001001.adf") 
-THP_2 <- raster("Campbell_Creek_THP1\\camp1_2008\\w001001.adf") 
-THP_3 <- raster("Campbell_Creek_THP1\\camp1_2010\\w001001.adf")
-THP_4 <- raster("Campbell_Creek_THP1\\camp1_2012\\w001001.adf")
-THP_5 <- raster("Campbell_Creek_THP1\\camp1_2014\\w001001.adf")
+THP_1 <- raster("v2 adf Campbell Creek THP 1\\01surrounding\\w001001.adf") 
+THP_2 <- raster("v2 adf Campbell Creek THP 1\\08surrounding\\w001001.adf") 
+THP_3 <- raster("v2 adf Campbell Creek THP 1\\10surrounding\\w001001.adf")
+THP_4 <- raster("v2 adf Campbell Creek THP 1\\12surrounding\\w001001.adf")
+THP_5 <- raster("v2 adf Campbell Creek THP 1\\14surrounding\\w001001.adf")
 
 THP_1_year <- 2001 #pre-harvest
 THP_2_year <- 2008 #mid-harvest
