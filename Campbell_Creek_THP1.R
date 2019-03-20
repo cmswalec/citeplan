@@ -199,8 +199,10 @@ dif_table <- data.frame("year" = c(THP_1_year, THP_2_year, THP_3_year, THP_4_yea
                         "low_percent" = c(lo1, lo2, lo3, lo4, lo5), 
                         "med_percent" = c(me1, me2, me3, me4, me5), 
                         "high_percent" = c(hi1, hi2, hi3, hi4, hi5), 
-                        "no_to_low_change" = c("", no2-no1, no3-lo1, lo4-lo1, lo5-lo1), 
-                        "high_percent_change_from_pre_harvest" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
+                        "no_percent_change" = c("", no2-no1, no3-no1, no4-no1, no5-no1), 
+                        "low_percent_change" = c("", lo2-lo1, lo3-lo1, lo4-lo1, lo5-lo1), 
+                        "med_percent_change" = c("", me2-me1, me3-me1, me4-me1, me5-me1), 
+                        "high_percent_change" = c("", hi2-hi1, hi3-hi1, hi4-hi1, hi5-hi1))
 
 #Because each raster has the same number of cells, uses a pooled-variance t-test to test for a significant difference in mean/median from baseline (pre-harvest)
 
